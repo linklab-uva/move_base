@@ -1,25 +1,25 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>fleet_move_base</name>
+  <name>move_base</name>
   <version>0.0.0</version>
-  <description>The fleet_move_base package</description>
+  <description>The F1/10 Move Base Package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
   <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
-  <maintainer email="varundev@todo.todo">varundev</maintainer>
+  <maintainer email="varundev@virginia.edu">Varundev Sukhil</maintainer>
 
 
   <!-- One license tag required, multiple allowed, one license per tag -->
   <!-- Commonly used license strings: -->
   <!--   BSD, MIT, Boost Software License, GPLv2, GPLv3, LGPLv2.1, LGPLv3 -->
-  <license>TODO</license>
+  <license>MIT</license>
 
 
   <!-- Url tags are optional, but multiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/fleet_move_base</url> -->
+  <!-- <url type="website">http://wiki.ros.org/move_base</url> -->
 
 
   <!-- Author tags are optional, multiple are allowed, one per tag -->

@@ -6,13 +6,13 @@
   <arg         name           = 'car_name'
                default        = 'car_1'/>
 
+  <group       ns             = '$(arg car_name)'>
   <!-- load VESC odometry parameters -->
   <arg         name           = 'vesc_config'
-               default        = '$(find move_base)/config/vesc_config.yaml'/>
+               default        = '$(find move_base)/config/vesc.config'/>
   <rosparam    file           = '$(arg vesc_config)'
                command        = 'load'/>
 
-  <group       ns             = '(arg car_name)'>
   <!-- launch VESC node driver -->
   <node        name           = 'vesc_driver'
                pkg            = 'vesc_driver'
@@ -34,7 +34,7 @@
   <param       name           = 'serial_baud'
                value          = '115200'/>
   <param       name           = 'frame_id'
-               value          = '(arg car_name)_laser'/> </node>
+               value          = '$(arg car_name)_laser'/> </node>
 
   <!-- joystick remote-teleop node -->
   <node        name           = 'remote_control'

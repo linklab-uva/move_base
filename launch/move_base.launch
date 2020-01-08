@@ -36,16 +36,27 @@
   <param       name           = 'frame_id'
                value          = '$(arg car_name)_laser'/> </node>
 
-  <!-- joystick remote-teleop node -->
-  <node        name           = 'remote_control'
+  <!-- static transform between base_link and laser -->
+  <node        name           = 'base_laser_link'
+               pkg            = 'tf'
+               type           = 'static_transform_publisher'
+               args           = '0.15 0.0 0.0
+                                 0.0 0.0 0.0
+                                 $(arg car_name)_base_link
+                                 $(arg car_name)_laser
+                                 10'/>
+
+  <!-- joystick based command_multiplexer node -->
+  <node        name           = 'command_multiplexer'
                pkg            = 'move_base'
-               type           = 'joy_teleop.py'
-               args           = '$(arg car_name)'/>
+               type           = 'command_multiplexer.py'
+               args           = '$(arg car_name)'
+               output         = 'screen'/>
 
   <!-- move_base node -->
   <node        name           = 'move_base'
                pkg            = 'move_base'
                type           = 'move_base.py'
-               args           = '$(arg car_name) priority_teleop'/> </group>
+               args           = '$(arg car_name)'/> </group>
 
 </launch>

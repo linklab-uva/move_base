@@ -5,6 +5,8 @@
   <!-- agent properties -->
   <arg         name           = 'car_name'
                default        = 'car_1'/>
+  <arg         name           = 'listen_offboard'
+               default        = 'false'/>
 
   <group       ns             = '$(arg car_name)'>
   <!-- load VESC odometry parameters -->
@@ -50,7 +52,7 @@
   <node        name           = 'command_multiplexer'
                pkg            = 'move_base'
                type           = 'command_multiplexer.py'
-               args           = '$(arg car_name)'
+               args           = '$(arg car_name) $(arg listen_offboard)'
                output         = 'screen'/>
 
   <!-- move_base node -->

@@ -7,8 +7,10 @@ from sensor_msgs.msg import Joy
 from ackermann_msgs.msg import AckermannDrive
 
 global current_command_topic
+global offboard_command
 
 car_name              = str(sys.argv[1])
+listen_offboard       = str(sys.argv[2])
 joy_angle_axis        = 2
 joy_angle_scaler      = 100.0
 joy_speed_axis        = 1
@@ -23,12 +25,16 @@ control_priority      = ['JTX2_OFFBOARD',
 current_command_topic = 'teleop/command'
 message_display       = [False, False]
 multiplexer_pub       = rospy.Publisher('/{}/multiplexer/command'.format(car_name), AckermannDrive, queue_size = 1)
+offboard_command      = AckermannDrive()
 
-def offboard_passthrough(data):
-    multiplexer_pub.publish(data)
+def offboard_callback(data):
+    global offboard_command
+    offboard_command.steering_angle = -1.0 * data.steering_angle
+    offboard_command.speed          = data.speed
 
 def joy_command_callback(data):
     global current_command_topic
+    global offboard_command
     passthrough_command = AckermannDrive()
     # listen to control transfer commands
     if data.buttons[ctl_offboard_button] and not data.buttons[ctl_teleop_button]:
@@ -49,14 +55,15 @@ def joy_command_callback(data):
         # identify and scale raw command data
         passthrough_command.steering_angle = -1.0 * data.axes[joy_angle_axis] * joy_angle_scaler
         passthrough_command.speed          = data.axes[joy_speed_axis] * joy_speed_scaler
-        multiplexer_pub.publish(passthrough_command)
-    else:
-        rospy.Subscriber('/{}/{}'.format(car_name, command_topic[0]), AckermannDrive, offboard_passthrough)
-
+    elif current_command_topic == command_topic[0] and listen_offboard == 'true':
+        passthrough_command = offboard_command
+    multiplexer_pub.publish(passthrough_command)
 
 if __name__ == '__main__':
     try:
         rospy.init_node('command_multiplexer', anonymous = True)
+        if listen_offboard == 'true':
+            rospy.Subscriber('/{}/offboard/command'.format(car_name), AckermannDrive, offboard_callback)
         rospy.Subscriber('/joy', Joy, joy_command_callback)
         rospy.spin()
     except rospy.ROSInterruptException:

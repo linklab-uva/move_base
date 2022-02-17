@@ -1,11 +1,17 @@
 <?xml version='1.0'?>
 
 <launch>
+  
+  <!-- launch argument -->
+  <arg         name           = 'js_name'
+               default        = 'js0'/>
 
   <!-- joy_node using F310/F710 -->
   <node        name           = 'joy_node'
                pkg            = 'joy'
                type           = 'joy_node'>
+  <param       name           = 'dev'
+               value          = '/dev/input/$(arg js_name)'/>
   <param       name           = 'autorepeat_rate'
                value          = '20.0'/> </node>
 
